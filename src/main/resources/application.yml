@@ -1,0 +1,21 @@
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+  datasource:
+    url: jdbc:postgresql://localhost:5432/simplesdental
+    username: postgres
+    password: 123456
+  h2:
+    console:
+      enabled: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+spring-doc:
+  swagger-ui:
+    path: /swagger-ui.html
