@@ -36,21 +36,22 @@ public class Profissional implements Serializable {
     @Schema(description = "Cargo do profissional.", example = "DESENVOLVEDOR, DESIGNER, SUPORTE e TESTER")
     private CargoType cargo;
 
+
     @Temporal(TemporalType.DATE)
     @Column(name = "nascimento")
     @Schema(description = "Data de nascimento do profissional.", example = "YYYY-MM-DDTHH:MM:SS.SSSZ")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
     private Date nascimento;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date")
     @Schema(description = "Data de criação do profissional em UTC-0.")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
-    private Date created;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
+    private Date created_at;
 
     @PrePersist
     protected void onCreate() {
-        this.created = new Date();
+        this.created_at = new Date();
     }
 
     @OneToMany(mappedBy = "profissional", cascade = CascadeType.DETACH)

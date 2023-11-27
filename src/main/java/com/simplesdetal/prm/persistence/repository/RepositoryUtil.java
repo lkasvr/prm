@@ -62,8 +62,7 @@ public class RepositoryUtil {
                 if (Objects.isNull(value)) {
                     continue;
                 }
-                final Method m = ReflectionUtils.findMethod(clazz, mn, value.getClass());
-
+                final Method m = getClassMethod(clazz, mn, value);
                 if (Objects.nonNull(m)) {
                     ReflectionUtils.makeAccessible(m);
                     ReflectionUtils.invokeMethod(m, obj, value);
@@ -72,6 +71,15 @@ public class RepositoryUtil {
         }
 
         return list;
+    }
+
+    static <T> Method getClassMethod(final Class<T> clazz, final String mn, final Object value) {
+        final Method m = ReflectionUtils.findMethod(clazz, mn, value.getClass());
+        if (Objects.isNull(m) && value instanceof java.sql.Date || value instanceof java.sql.Timestamp) {
+           return ReflectionUtils.findMethod(clazz, mn, Date.class);
+        }
+
+        return m;
     }
 
     static Set<String> getFields(final Class<?> clazz) {
