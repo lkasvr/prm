@@ -38,7 +38,7 @@ public class Profissional implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "nascimento")
-    @Schema(description = "Data de nascimento do profissional.")
+    @Schema(description = "Data de nascimento do profissional.", example = "YYYY-MM-DDTHH:MM:SS.SSSZ")
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date nascimento;
 
@@ -48,8 +48,12 @@ public class Profissional implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date created;
 
+    @PrePersist
+    protected void onCreate() {
+        this.created = new Date();
+    }
+
     @OneToMany(mappedBy = "profissional", cascade = CascadeType.DETACH)
     @Schema(description = "Conjunto de contatos associados ao profissional.")
     private Set<Contato> contatos;
-
 }

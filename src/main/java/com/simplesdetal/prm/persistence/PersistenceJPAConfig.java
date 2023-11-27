@@ -6,6 +6,4 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-public class PersistenceJPAConfig {
-
-}
+public class PersistenceJPAConfig { }

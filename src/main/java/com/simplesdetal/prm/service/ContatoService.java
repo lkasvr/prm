@@ -6,6 +6,7 @@ import com.simplesdetal.prm.persistence.model.Profissional;
 import com.simplesdetal.prm.persistence.repository.ContatoRepository;
 import com.simplesdetal.prm.persistence.repository.ProfissionalRepository;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

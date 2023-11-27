@@ -15,7 +15,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-
 spring-doc:
   swagger-ui:
     path: /swagger-ui.html

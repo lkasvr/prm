@@ -14,8 +14,7 @@ import static java.lang.reflect.Modifier.isTransient;
 
 public class RepositoryUtil {
 
-    private RepositoryUtil() {
-    }
+    private RepositoryUtil() {}
 
     static <T> List<T>  findText(final EntityManager entityManager, final String text, final Set<String> fields, final Class<T> clazz) {
 
