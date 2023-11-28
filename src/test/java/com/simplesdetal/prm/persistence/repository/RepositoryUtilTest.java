@@ -95,7 +95,7 @@ class RepositoryUtilTest {
         when(root.get("nome")).thenReturn((Path<Object>) path);
         when(root.get("cargo")).thenReturn((Path<Object>) path);
         when(root.get("nascimento")).thenReturn((Path<Object>) path);
-        when(root.get("created")).thenReturn((Path<Object>) path);
+        when(root.get("created_at")).thenReturn((Path<Object>) path);
         when(path.as(any())).thenReturn((Path<Object>) path);
 
 
@@ -111,7 +111,7 @@ class RepositoryUtilTest {
     void testGetFields() {
         final Set<String> result = repositoryUtil.getFields(Profissional.class);
         assertNotNull(result);
-        assertEquals(5, result.size());
+        assertEquals(6, result.size());
     }
 
     @Test

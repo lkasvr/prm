@@ -54,8 +54,6 @@ class ContatoControllerTest {
     private ProfissionalController profissionalController;
 
 
-
-
     Contato bindContato(final ResultActions result) throws Exception {
         final String responseContent = result.andReturn().getResponse().getContentAsString();
         final Contato contato = objectMapper.readValue(responseContent, Contato.class);
@@ -84,7 +82,6 @@ class ContatoControllerTest {
 
     Profissional bindProfissional(final ResultActions result) throws Exception {
         final String responseContent = result.andReturn().getResponse().getContentAsString();
-        final Profissional profissional = objectMapper.readValue(responseContent, Profissional.class);
         return objectMapper.readValue(responseContent, Profissional.class);
 
     }
@@ -103,7 +100,6 @@ class ContatoControllerTest {
         assertThat(responseProfissional.getId()).isNotNull();
         assertThat(responseProfissional.getCargo()).isEqualTo(profissional.getCargo());
         assertThat(responseProfissional.getNome()).isEqualTo(profissional.getNome());
-
     }
 
     Profissional createProfissional() throws Exception {
@@ -111,6 +107,7 @@ class ContatoControllerTest {
         final Profissional profissional = Profissional.builder()
                 .nome("testing create")
                 .cargo(CargoType.DESENVOLVEDOR)
+                .active(1)
                 .build();
 
         final Profissional responseProfissional = create(profissional);

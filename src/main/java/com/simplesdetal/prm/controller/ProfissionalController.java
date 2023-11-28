@@ -8,14 +8,17 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
+
+import static java.lang.reflect.Modifier.isStatic;
+import static java.lang.reflect.Modifier.isTransient;
 
 /**
  * Controlador para operações relacionadas aos profissionais.
@@ -92,10 +95,20 @@ public class ProfissionalController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponse(responseCode = "404", description = "Profissional não encontrado")
     public ResponseEntity<Profissional> update(@PathVariable("id") final Long id, @RequestBody final Profissional profissional) {
-        profissional.setId(id);
-        return repository.existsById(id)
-                ? new ResponseEntity<>(repository.save(profissional), HttpStatus.OK)
-                : new ResponseEntity<>(repository.save(profissional), HttpStatus.BAD_REQUEST);
+        final Profissional current = repository.findById(id).orElseThrow();
+
+        for (final Field field : profissional.getClass().getDeclaredFields()) {
+            try {
+                field.setAccessible(true);
+                final Object value = field.get(profissional);
+                if(isStatic(field.getModifiers()) || isTransient(field.getModifiers())) continue;
+                if (Objects.nonNull(value)) field.set(current, value);
+            } catch (final IllegalAccessException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        return new ResponseEntity<>(repository.save(current), HttpStatus.OK);
     }
 
     /**

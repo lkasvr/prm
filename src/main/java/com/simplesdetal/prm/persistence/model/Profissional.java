@@ -1,9 +1,15 @@
 package com.simplesdetal.prm.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.simplesdetal.prm.persistence.entityListeners.ProfissionalListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
 import lombok.*;
+import org.hibernate.annotations.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,10 +18,13 @@ import java.util.Set;
 
 @Entity
 @Data
+@SQLDelete(sql = "update profissional set active = 0 where id = ?")
+@Where(clause = "active = 1")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(ProfissionalListener.class)
 public class Profissional implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -38,23 +47,24 @@ public class Profissional implements Serializable {
 
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "nascimento")
+    @Column(name = "nascimento", nullable = false)
     @Schema(description = "Data de nascimento do profissional.", example = "YYYY-MM-DDTHH:MM:SS.SSSZ")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
     private Date nascimento;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_date")
+    @CreationTimestamp
+    @Column(name = "created_date", nullable = false, updatable = false)
     @Schema(description = "Data de criação do profissional em UTC-0.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
     private Date created_at;
 
-    @PrePersist
-    protected void onCreate() {
-        this.created_at = new Date();
-    }
-
     @OneToMany(mappedBy = "profissional", cascade = CascadeType.DETACH)
     @Schema(description = "Conjunto de contatos associados ao profissional.")
     private Set<Contato> contatos;
+
+    @ColumnDefault("1")
+    @Column(name = "active", nullable = false, updatable = false)
+    @JsonIgnore
+    private Integer active;
+
 }

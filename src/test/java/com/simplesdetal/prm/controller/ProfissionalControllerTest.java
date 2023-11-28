@@ -55,6 +55,7 @@ class ProfissionalControllerTest {
     Profissional bindProfissional(final ResultActions result) throws Exception {
         final String responseContent = result.andReturn().getResponse().getContentAsString();
         final Profissional profissional = objectMapper.readValue(responseContent, Profissional.class);
+        profissional.setActive(1);
         PROFISSIONAIS.remove(profissional);
         PROFISSIONAIS.add(profissional);
         return objectMapper.readValue(responseContent, Profissional.class);
@@ -68,7 +69,6 @@ class ProfissionalControllerTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         return bindProfissional(result);
-
     }
 
     void assertProfissional(final Profissional profissional, final Profissional responseProfissional) throws Exception {
@@ -84,6 +84,7 @@ class ProfissionalControllerTest {
         final Profissional profissional = Profissional.builder()
                 .nome("testing create")
                 .cargo(CargoType.DESENVOLVEDOR)
+                .active(1)
                 .build();
 
         final Profissional responseProfissional = create(profissional);
@@ -97,6 +98,7 @@ class ProfissionalControllerTest {
         final Profissional profissionalCreate = Profissional.builder()
                 .nome("testing get")
                 .cargo(CargoType.DESIGNER)
+                .active(1)
                 .build();
 
         final Profissional responseProfissionalCreate = create(profissionalCreate);
@@ -137,7 +139,7 @@ class ProfissionalControllerTest {
 
         assertProfissional(profissionalCreate, responseProfissionalCreate);
 
-        responseProfissionalCreate.setNome("testing update");
+        responseProfissionalCreate.setNome("test update");
 
 
         final ResultActions result = mockMvc.perform(put("/profissionais/"+ responseProfissionalCreate.getId())
@@ -177,6 +179,7 @@ class ProfissionalControllerTest {
         final Profissional profissionalCreate = Profissional.builder()
                 .nome("testing update not found")
                 .cargo(CargoType.SUPORTE)
+                .active(1)
                 .build();
 
 
@@ -197,6 +200,7 @@ class ProfissionalControllerTest {
                 .id(999999L)
                 .nome("testing update not found")
                 .cargo(CargoType.SUPORTE)
+                .active(1)
                 .build();
 
         mockMvc.perform(delete("/profissionais/" + profissionalCreate.getId())
@@ -213,6 +217,7 @@ class ProfissionalControllerTest {
         final Profissional profissionalCreate1 = Profissional.builder()
                 .nome("testing list x")
                 .cargo(CargoType.DESIGNER)
+                .active(1)
                 .build();
 
 
@@ -224,6 +229,7 @@ class ProfissionalControllerTest {
         final Profissional profissionalCreate2 = Profissional.builder()
                 .nome("testing list 2")
                 .cargo(CargoType.TESTER)
+                .active(1)
                 .build();
 
 
@@ -234,6 +240,7 @@ class ProfissionalControllerTest {
         final Profissional profissionalCreate3 = Profissional.builder()
                 .nome("testing list 3")
                 .cargo(CargoType.DESENVOLVEDOR)
+                .active(1)
                 .build();
 
 
@@ -244,6 +251,7 @@ class ProfissionalControllerTest {
         final Profissional profissionalCreate4 = Profissional.builder()
                 .nome("asasasasasasasas 4")
                 .cargo(CargoType.SUPORTE)
+                .active(1)
                 .build();
 
 
@@ -268,7 +276,7 @@ class ProfissionalControllerTest {
         assertThat(responseProfissional.getId()).isNull();
         assertThat(responseProfissional.getNome()).isNotNull();
         assertThat(responseProfissional.getCargo()).isNotNull();
-        assertThat(responseProfissional.getCreated()).isNull();
+        assertThat(responseProfissional.getCreated_at()).isNull();
     }
 
 
