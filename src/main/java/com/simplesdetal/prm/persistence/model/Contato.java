@@ -1,8 +1,6 @@
 package com.simplesdetal.prm.persistence.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
@@ -49,7 +47,7 @@ public class Contato implements Serializable {
     private Profissional profissional;
 
     @Transient
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long idProfissional;
 
 }

@@ -67,10 +67,8 @@ public class ContatoController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponse(responseCode = "200", description = "Contato encontrado", content = @Content(schema = @Schema(implementation = Contato.class)))
     @ApiResponse(responseCode = "404", description = "Contato não encontrado")
-    public ResponseEntity<Optional<Contato>> get(@PathVariable("id") final Long id) {
-        return repository.existsById(id)
-                ? new ResponseEntity<>(repository.findById(id), HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Contato> get(@PathVariable("id") final Long id) {
+        return new ResponseEntity<>(contatoService.read(id), HttpStatus.OK);
     }
 
     /**
@@ -96,7 +94,7 @@ public class ContatoController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponse(responseCode = "404", description = "Profissional não encontrado")
     public ResponseEntity<Contato> update(@PathVariable("id") final Long id, @RequestBody final Contato contato) {
-        return new ResponseEntity<>(contatoService.update(contato), HttpStatus.OK);
+        return new ResponseEntity<>(contatoService.update(id, contato), HttpStatus.OK);
     }
 
     /**
@@ -107,7 +105,7 @@ public class ContatoController {
      */
     @Operation(summary = "Excluir um contato pelo ID")
     @DeleteMapping(value = "/{id}")
-    @ApiResponse(responseCode = "404", description = "Profissional não encontrado")
+    @ApiResponse(responseCode = "404", description = "Profissional não encorepositoryntrado")
     public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);

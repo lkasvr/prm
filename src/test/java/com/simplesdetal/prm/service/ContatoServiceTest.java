@@ -65,7 +65,6 @@ class ContatoServiceTest {
     void testUpdate() {
 
         Contato existingContato = new Contato();
-        existingContato.setId(1L);
         existingContato.setIdProfissional(1L);
         existingContato.setValor("123456789");
         existingContato.setNome(ContatoType.FIXO);
@@ -73,7 +72,7 @@ class ContatoServiceTest {
         when(contatoRepository.findById(1L)).thenReturn(Optional.of(existingContato));
         when(contatoRepository.save(existingContato)).thenReturn(existingContato);
 
-        Contato updatedContato = contatoService.update(existingContato);
+        Contato updatedContato = contatoService.update(1L, existingContato);
 
 
         assertNotNull(updatedContato);
@@ -81,18 +80,6 @@ class ContatoServiceTest {
         assertEquals(existingContato.getIdProfissional(), updatedContato.getIdProfissional());
 
         verify(contatoRepository, times(1)).save(existingContato);
-    }
-
-    @Test
-    void testUpdateWithNullId() {
-
-        Contato contatoWithoutId = new Contato();
-        contatoWithoutId.setIdProfissional(1L);
-        contatoWithoutId.setValor("123456789");
-        contatoWithoutId.setNome(ContatoType.FIXO);
-
-
-        assertThrows(NegocioException.class, () -> contatoService.update(contatoWithoutId));
     }
 
     @Test
@@ -109,7 +96,6 @@ class ContatoServiceTest {
     void testUpdateWithNonexistentContato() {
 
         Contato nonexistentContato = new Contato();
-        nonexistentContato.setId(1L);
         nonexistentContato.setIdProfissional(1L);
         nonexistentContato.setValor("123456789");
         nonexistentContato.setNome(ContatoType.FIXO);
@@ -117,6 +103,6 @@ class ContatoServiceTest {
 
         when(contatoRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(NegocioException.class, () -> contatoService.update(nonexistentContato));
+        assertThrows(NegocioException.class, () -> contatoService.update(1L, nonexistentContato));
     }
 }

@@ -1,15 +1,12 @@
 package com.simplesdetal.prm.persistence.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import com.simplesdetal.prm.persistence.entityListeners.ProfissionalListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import lombok.*;
 import org.hibernate.annotations.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.ReadOnlyProperty;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,14 +14,15 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Data
 @SQLDelete(sql = "update profissional set active = 0 where id = ?")
 @Where(clause = "active = 1")
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EntityListeners(ProfissionalListener.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Profissional implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -60,6 +58,8 @@ public class Profissional implements Serializable {
 
     @OneToMany(mappedBy = "profissional", cascade = CascadeType.DETACH)
     @Schema(description = "Conjunto de contatos associados ao profissional.")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<Contato> contatos;
 
     @ColumnDefault("1")

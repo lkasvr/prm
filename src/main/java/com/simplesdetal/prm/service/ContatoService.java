@@ -6,7 +6,6 @@ import com.simplesdetal.prm.persistence.model.Profissional;
 import com.simplesdetal.prm.persistence.repository.ContatoRepository;
 import com.simplesdetal.prm.persistence.repository.ProfissionalRepository;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -32,13 +31,24 @@ public class ContatoService {
         return repository.save(contato);
     }
 
-    public Contato update(final Contato contato) {
+    public Contato read(final long id) {
+        Contato current = getContato(id);
+        current.setIdProfissional(current.getProfissional().getId());
+        return current;
+    }
+
+    public Contato update(final long id, final Contato contato) {
+        contato.setId(id);
         final Contato current = getContato(contato);
         current.setValor(contato.getValor());
         current.setNome(contato.getNome());
         return repository.save(current);
     }
 
+    private Contato getContato(final long id) {
+        final Optional<Contato> optional = repository.findById(id);
+        return optional.orElseThrow( () -> new NegocioException("O contato informado não existe em nosso banco de dados."));
+    }
 
     private Contato getContato(final Contato contato) {
         if (Objects.isNull(contato) || Objects.isNull(contato.getId())) {
@@ -49,14 +59,12 @@ public class ContatoService {
         return optional.orElseThrow( () -> new NegocioException("O contato informado não existe em nosso banco de dados."));
     }
 
+
     private Profissional getProfissional(final Contato contato) {
-        if (Objects.isNull(contato.getIdProfissional())) {
-            throw new NegocioException("A informação do profissional é obrigatória.");
-        }
+        if (Objects.isNull(contato.getIdProfissional())) throw new NegocioException("A informação do profissional é obrigatória.");
 
         final Optional<Profissional> optional = profissionalRepository.findById(contato.getIdProfissional());
         return optional.orElseThrow( () -> new NegocioException("O profissional informado não existe em nosso banco de dados."));
     }
-
 
 }

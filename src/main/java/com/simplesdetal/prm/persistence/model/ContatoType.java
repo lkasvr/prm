@@ -28,9 +28,7 @@ public enum ContatoType {
 
         @Override
         public ContatoType convertToEntityAttribute(String value) {
-            if (value == null) {
-                return null;
-            }
+            if (value == null) return null;
 
             for (ContatoType contatoType : ContatoType.values()) {
                 if (contatoType.getNome().equalsIgnoreCase(value)) {

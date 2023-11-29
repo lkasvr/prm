@@ -11,4 +11,5 @@ public class ProfissionalListener {
     void setActive(Profissional profissional) {
         if (profissional.getActive() == null) profissional.setActive(1);
     }
+
 }
