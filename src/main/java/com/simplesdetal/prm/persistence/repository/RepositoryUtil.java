@@ -59,9 +59,9 @@ public class RepositoryUtil {
                 final Object value = r[i];
                 final String f = validFields.get(i);
                 final String mn = "set" + f.substring(0, 1).toUpperCase() + f.substring(1);
-                if (Objects.isNull(value)) {
-                    continue;
-                }
+
+                if (Objects.isNull(value)) continue;
+
                 final Method m = getClassMethod(clazz, mn, value);
                 if (Objects.nonNull(m)) {
                     ReflectionUtils.makeAccessible(m);
