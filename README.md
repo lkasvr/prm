@@ -1,10 +1,10 @@
 <p align="center">
-  <img href="https://camo.githubusercontent.com/7b23e6c442adf9ef0714d6b52c2621b3ebef58bcc2f101b8dabab05904201e4f/68747470733a2f2f63646e2e69636f6e73636f75742e636f6d2f69636f6e2f667265652f706e672d3235362f6a6176612d34332d3536393330352e706e67" width="200" alt="Java Logo" />
+<img src="https://cdn.iconscout.com/icon/free/png-256/java-43-569305.png" width="120">
 </p>
 
 ## Description
 
-The PRM (Professional Resource Management) application is a Rest API for registering and controlling professionals and their specialties, maintaining two entities: the Contact and the Professional related to this contact.
+The **PRM (Professional Resource Management)** application is a Rest API for registering and controlling professionals and their specialties, maintaining two entities: the Contact and the Professional related to this contact.
 
 This application was built to satisfy a technical assessment in a selection process for the company Simples Dental. A selection process in which I was unsuccessful in the last stage, but nevertheless passed several others, including the technical test phase in which this application was the product.
 
